@@ -3,16 +3,18 @@ import imagem_principal from '/home/didibaiano/Desktop/Projetos Driven/projeto11
 import { BASE_COLOR } from "../../constants/colors"
 import { Link } from "react-router-dom"
 
-export default function HomePage() {
+export default function SignUpPage() {
     return (
         <Tela>
             <Imagem src={imagem_principal}></Imagem>
             <form>
                 <input type="email" placeholder="email"></input>
                 <input type="password" placeholder="senha"></input>
-                <button>Entrar</button>
-                <Link to='/cadastro'>
-                    <a>Não tem uma conta? Cadastre-se!</a>
+                <input type='text' placeholder="nome"></input>
+                <input type='text' placeholder="foto"></input>
+                <button>Cadastrar</button>
+                <Link to='/'>
+                    <a>Já tem uma conta? Faça o login!</a>
                 </Link>
             </form>
 
