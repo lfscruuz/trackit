@@ -1,18 +1,60 @@
 import styled from "styled-components"
 import imagem_principal from '/home/didibaiano/Desktop/Projetos Driven/projeto11-trackit/src/assets/images/Group_8.png'
 import { BASE_COLOR } from "../../constants/colors"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import { useState, useContext } from "react"
+import axios from "axios"
+import UserContext from "../../constants/Context"
+
 
 export default function SignUpPage() {
+    const [email, setEmail] = useState('')
+    const [senha, setSenha] = useState('')
+    const [nome, setNome] = useState('')
+    const [foto, setFoto] = useState('')
+    const navigate = useNavigate()
+    const {setUser} = useContext(UserContext);
+    const cadastro = {
+        email: '',
+        name: '',
+        image: '',
+        password: ''
+    }
+    
+    function enviar(e){
+        e.preventDefault();
+        setUser(foto)
+        cadastro.email = email;
+        cadastro.name = nome;
+        cadastro.image = foto;
+        cadastro.password = senha;
+        axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up', cadastro)
+        .then(() =>{
+            console.log(cadastro)
+            navigate('/')
+        })
+        .catch((err) =>{
+            console.log(err.message)
+        })
+    }
+
     return (
         <Tela>
             <Imagem src={imagem_principal}></Imagem>
             <form>
-                <input type="email" placeholder="email"></input>
-                <input type="password" placeholder="senha"></input>
-                <input type='text' placeholder="nome"></input>
-                <input type='text' placeholder="foto"></input>
-                <button>Cadastrar</button>
+                <input type="email" placeholder="email" onChange={(e) => {
+                    setEmail(e.target.value)
+                    }}></input>
+                <input type="password" placeholder="senha" onChange={(e) => {
+                    setSenha(e.target.value)
+                    }}></input>
+                <input type='text' placeholder="nome" onChange={(e) => {
+                    setNome(e.target.value)
+                    }}></input>
+                <input type='url' placeholder="foto" onChange={(e) => {
+                    setFoto(e.target.value)
+                    }}></input>
+                <button onClick={(e) => enviar(e)}>Cadastrar</button>
                 <Link to='/'>
                     <a>Já tem uma conta? Faça o login!</a>
                 </Link>

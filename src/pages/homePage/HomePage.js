@@ -1,16 +1,45 @@
 import styled from "styled-components"
 import imagem_principal from '/home/didibaiano/Desktop/Projetos Driven/projeto11-trackit/src/assets/images/Group_8.png'
 import { BASE_COLOR } from "../../constants/colors"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import axios from "axios"
+import { useState } from "react"
 
 export default function HomePage() {
+    
+    const [email, setEmail] = useState('');
+    const [senha, setSenha] = useState('');
+    const navigate = useNavigate()
+    const login = {
+        email: '',
+        password: ''
+    }
+
+    function envia (e){
+        e.preventDefault();
+        login.email = email;
+        login.password = senha;
+        axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login', login)
+        .then(() =>{
+            console.log(login)
+            navigate('/habitos')
+        })
+        .catch((err) => {
+            console.log(err.message)
+        })
+    }
+
     return (
         <Tela>
             <Imagem src={imagem_principal}></Imagem>
             <form>
-                <input type="email" placeholder="email"></input>
-                <input type="password" placeholder="senha"></input>
-                <button>Entrar</button>
+                <input type="email" placeholder="email" onChange={(e) => {
+                    setEmail(e.target.value)
+                    }}></input>
+                <input type="password" placeholder="senha" onChange={(e) => {
+                    setSenha(e.target.value)
+                    }}></input>
+                <button onClick={(e) => envia(e)}>Entrar</button>
                 <Link to='/cadastro'>
                     <a>Não tem uma conta? Cadastre-se!</a>
                 </Link>

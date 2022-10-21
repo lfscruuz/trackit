@@ -2,8 +2,7 @@ import Botao from "./Botao";
 import styled from "styled-components"
 import { BACKGROUND_COLOR, BASE_COLOR, ACCENT_COLOR } from "../../constants/colors";
 
-export default function NovoHabito() {
-    const dias = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S']
+export default function NovoHabito({setNovoHabito, dias}) {
 
     return (
         <Habito>
@@ -15,7 +14,7 @@ export default function NovoHabito() {
                     )
                 })}
                 <div className="botoes">
-                    <a>Cancelar</a>
+                    <a onClick={() => setNovoHabito(false)}>Cancelar</a>
                     <button className="salvar">Salvar</button>
                 </div>
             </form>

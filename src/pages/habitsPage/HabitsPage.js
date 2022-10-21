@@ -1,4 +1,4 @@
-import { createElement } from "react"
+import { createElement, useState } from "react"
 import styled from "styled-components"
 import Footer from "../../components/Footer"
 import NavBar from "../../components/NavBar"
@@ -9,8 +9,11 @@ import Todo from './Todo'
 
 export default function HabitsPage() {
 
+    const dias = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S']
+
+    const [novoHabito, setNovoHabito] = useState(false);
     function criaHabito(){
-        createElement(<Todo/>)
+        setNovoHabito(!novoHabito)
     }
     return (
         <Tela>
@@ -19,14 +22,11 @@ export default function HabitsPage() {
                 <h1>Meus Hábitos</h1>
                 <button onClick={criaHabito} >+</button>
             </Topo>
-            <Todo />
-            <Todo />
-            <Todo />
-
-            {/* <NovoHabito/>
+            {novoHabito === true ? <NovoHabito novoHabito={novoHabito} setNovoHabito={setNovoHabito} dias={dias} /> : ''}
+            <Todo dias={dias} />
             <Aviso>
                 <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>
-            </Aviso> */}
+            </Aviso>
             <Footer />
         </Tela>
     )

@@ -1,17 +1,21 @@
 import styled from "styled-components"
 import { ACCENT_COLOR } from "../constants/colors"
 import logo from '../assets/images/TrackIt.png'
-import imagemDePerfil from '../assets/images/yotsuba.jpg'
-import { Link } from "react-router-dom"
 
+import { Link } from "react-router-dom"
+import { useContext } from "react"
+import UserContext from "../constants/Context"
+ 
 
 export default function NavBar() {
+
+    const {user} = useContext(UserContext);
     return (
         <Topo>
             <Link to='/habitos'>
                 <img src={logo} />
             </Link>
-            <img className="imagem-de-perfil" src={imagemDePerfil} />
+            <img className="imagem-de-perfil" src={user} />
         </Topo>
     )
 }

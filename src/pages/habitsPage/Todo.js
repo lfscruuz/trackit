@@ -1,10 +1,9 @@
 import styled from "styled-components"
-import Botao from "./Botao"
 import bin from '../../assets/images/Vector.svg'
 
-export default function Todo() {
-    const dias = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S']
+export default function Todo({dias}) {
 
+    const indices = [ 1, 3, 5]
     return (
         <Card>
             <p>Ler 1 capítulo de livro</p>
@@ -12,7 +11,7 @@ export default function Todo() {
             <Botoes>
                 {dias.map((d, i) => {
                     return (
-                        <Botao d={d} key={i}></Botao>
+                        <Dia className="dia" key={i}>{d}</Dia>
                     )
                 })}
             </Botoes>
@@ -44,4 +43,17 @@ const Card = styled.div`
 const Botoes = styled.div`
     display: flex;
     margin: 8px 0;
+`
+const Dia = styled.div`
+    width: 30px;
+    height: 30px;
+    border: solid 1px #D4D4D4;
+    border-radius: 5px;
+    margin-right: 5px;
+    background-color: ${props => props.selecionarBotao === false ? '#fff' : '#CFCFCF'};
+    color: ${props => props.selecionarBotao === false ? '#DBDBDB' : '#fff'};
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 `
