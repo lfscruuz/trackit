@@ -2,13 +2,16 @@ import { useState } from "react"
 import styled from "styled-components"
 
 
-export default function Botao({d}){
+export default function Botao({d, i, dia, seleciona}){
     const [selecionarBotao, setSelecionarBotao] = useState(false)
+
     function ativaDesativa(){
-        if (selecionarBotao === true){
+        if (selecionarBotao){
             setSelecionarBotao(false)
+            dia.pop(i)
         } else{
             setSelecionarBotao(true)
+            dia.push(i)
         }
     }
     return (

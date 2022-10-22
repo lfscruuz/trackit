@@ -2,12 +2,20 @@ import styled from "styled-components"
 import { BASE_COLOR } from "../constants/colors"
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import UserContext from "../constants/Context";
+
 
 export default function Footer() {
+
+    const { progress } = useContext(UserContext);
+
     const percentage = 80;
     return (
         <Base>
-            <a>Hábitos</a>
+            <Link to='/habitos'>
+                <EstiloP>Hábitos</EstiloP>
+            </Link>
             <Hoje
                 value={percentage}
                 text='Hoje'
@@ -20,7 +28,10 @@ export default function Footer() {
                     trailColor: "transparent"
                 })}
             />
-            <a>Histórico</a>
+            <Link to='/historico'>
+                <EstiloP>Histórico</EstiloP>
+            </Link>
+
         </Base>
     )
 }
@@ -36,9 +47,10 @@ const Base = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    >a{
-        color: ${BASE_COLOR};
-    }
+`
+const EstiloP = styled.div`
+    color: ${BASE_COLOR};
+    text-decoration: underline;
 `
 
 const Hoje = styled(CircularProgressbar)`

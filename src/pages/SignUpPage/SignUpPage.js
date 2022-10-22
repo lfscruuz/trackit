@@ -13,7 +13,7 @@ export default function SignUpPage() {
     const [nome, setNome] = useState('')
     const [foto, setFoto] = useState('')
     const navigate = useNavigate()
-    const {setUser} = useContext(UserContext);
+    const {user, setUser} = useContext(UserContext);
     const cadastro = {
         email: '',
         name: '',
@@ -23,18 +23,21 @@ export default function SignUpPage() {
     
     function enviar(e){
         e.preventDefault();
-        setUser(foto)
         cadastro.email = email;
         cadastro.name = nome;
         cadastro.image = foto;
         cadastro.password = senha;
         axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up', cadastro)
-        .then(() =>{
+        .then((res) =>{
             console.log(cadastro)
             navigate('/')
+            
         })
         .catch((err) =>{
-            console.log(err.message)
+            console.log(err.response.status)
+            if(err.response.status === 409){
+                alert('usuário já cadastrado')
+            }
         })
     }
 

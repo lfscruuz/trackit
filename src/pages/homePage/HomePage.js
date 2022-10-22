@@ -3,10 +3,12 @@ import imagem_principal from '/home/didibaiano/Desktop/Projetos Driven/projeto11
 import { BASE_COLOR } from "../../constants/colors"
 import { Link, useNavigate } from "react-router-dom"
 import axios from "axios"
-import { useState } from "react"
+import { useState, useContext } from "react"
+import UserContext from "../../constants/Context"
+
 
 export default function HomePage() {
-    
+    const {user, setUser} = useContext(UserContext);
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
     const navigate = useNavigate()
@@ -20,9 +22,9 @@ export default function HomePage() {
         login.email = email;
         login.password = senha;
         axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login', login)
-        .then(() =>{
-            console.log(login)
-            navigate('/habitos')
+        .then((res) =>{
+            navigate('/hoje')
+            setUser(res.data)
         })
         .catch((err) => {
             console.log(err.message)

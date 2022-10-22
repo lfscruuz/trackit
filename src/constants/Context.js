@@ -5,9 +5,10 @@ const UserContext = createContext();
 
 function UserProvider({children}) {
     const [user, setUser] = useState('');
+    const [progress, setProgress] = useState(0);
 
     return(
-        <UserContext.Provider value={{user, setUser}} >
+        <UserContext.Provider value={{user, setUser, progress, setProgress}} >
             {children}
         </UserContext.Provider>
     )
