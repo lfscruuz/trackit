@@ -4,26 +4,34 @@ import { BACKGROUND_COLOR, BASE_COLOR, ACCENT_COLOR } from "../../constants/colo
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import UserContext from "../../constants/Context";
+import { ThreeDots } from 'react-loader-spinner'
 
 export default function NovoHabito({ setNovoHabito, dias, enviou, setEnviou }) {
 
     const { user } = useContext(UserContext);
     const [nomeDoHabito, setNomeDoHabito] = useState('');
     const [listaDias, setListaDias] = useState([]);
-    const [carregou, setCarregou] = useState(true)
     const [seleciona, setSeleciona] = useState('')
+    const [carregou, setCarregou] = useState(true)
+    const [carrega, setCarrega] = useState(false)
     const dia = [];
     const habito = {
         name: '',
-        days: [1, 3, 5]
+        days:[]
     };
 
     useEffect(() =>{
         setListaDias(dia)
-        console.log(listaDias)
     }, [])
 
+    function cancelar(e){
+        e.preventDefault()
+        setNovoHabito(false)
+        setCarrega(false)
+    }
+
     function mandar(e) {
+        setCarrega(true)
         e.preventDefault()
         habito.name = nomeDoHabito
         habito.days = dia
@@ -37,12 +45,14 @@ export default function NovoHabito({ setNovoHabito, dias, enviou, setEnviou }) {
         )
         .then((res) => {
             setEnviou(!enviou)
+            setCarrega(false)
             setNovoHabito(false)
             setCarregou(false)
             setSeleciona(res.data)
             console.log(res.data)
         })
         .catch((err) => {
+            setCarrega(false)
             console.log(err)
             if (err.response.status === 422) {
                 alert('o campo "nome do hábito" não pode ficar vazio')
@@ -53,18 +63,29 @@ export default function NovoHabito({ setNovoHabito, dias, enviou, setEnviou }) {
     return (
         <Habito>
             <form>
-                <input type='text' placeholder="nome do hábito" onChange={(e) => {
+                <input type='text' placeholder="nome do hábito" disabled={carrega} onChange={(e) => {
                     setNomeDoHabito(e.target.value)
 
                 }} />
                 {dias.map((d, i) => {
                     return (
-                        <Botao d={d} key={i} i={i} listaDias={listaDias} setListaDias={setListaDias} dia={dia}></Botao>
+                        <Botao carrega={carrega} d={d} key={i} i={i} listaDias={listaDias} setListaDias={setListaDias} dia={dia}></Botao>
                     )
                 })}
                 <div className="botoes">
-                    <a onClick={() => setNovoHabito(false)}>Cancelar</a>
-                    <button className="salvar" onClick={(e) => mandar(e)} >Salvar</button>
+                    <a onClick={(e) => cancelar(e)}>Cancelar</a>
+                    <button className="salvar" onClick={(e) => mandar(e)}>{carrega === false ? 'Salvar' :
+                    <ThreeDots
+                        height="80"
+                        width="50"
+                        radius="9"
+                        color="#fff"
+                        ariaLabel="three-dots-loading"
+                        wrapperStyle={{}}
+                        wrapperClassName=""
+                        visible={true}
+                    />
+                }</button>
                 </div>
             </form>
         </Habito>
@@ -101,6 +122,8 @@ const Habito = styled.div`
 
     >form >.botoes{
         position: absolute;
+        display: flex;
+        align-items: center;
         bottom: 13px;
         right: 13px;
     }
@@ -112,7 +135,9 @@ const Habito = styled.div`
     }
 
     >form >.botoes >.salvar{
-        
+        display: flex;
+        justify-content: center;
+        align-items: center;
         width: 84px;
         height: 35px;
         border: none;

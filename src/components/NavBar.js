@@ -12,7 +12,7 @@ export default function NavBar() {
     const {user} = useContext(UserContext);
     return (
         <Topo>
-            <Link to='/habitos'>
+            <Link to='/hoje'>
                 <img src={logo} />
             </Link>
             <img className="imagem-de-perfil" src={user.image} />

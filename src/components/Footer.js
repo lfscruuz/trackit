@@ -2,13 +2,25 @@ import styled from "styled-components"
 import { BASE_COLOR } from "../constants/colors"
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import { Link } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import UserContext from "../constants/Context";
 
 
 export default function Footer() {
 
-    const { progress } = useContext(UserContext);
+    
+    const { progress, setProgress, qtdHabitos, concluido } = useContext(UserContext);
+
+    useEffect(() => {
+        let calculo = 0;
+        if (qtdHabitos !== 0){
+            calculo = Math.ceil((concluido / qtdHabitos) * 100)
+        }
+
+        setProgress(calculo)
+        console.log(concluido)
+        console.log(calculo)
+    }, [concluido, qtdHabitos])
 
     const percentage = 80;
     return (
@@ -16,8 +28,9 @@ export default function Footer() {
             <Link to='/habitos'>
                 <EstiloP>Hábitos</EstiloP>
             </Link>
+
             <Hoje
-                value={percentage}
+                value={progress}
                 text='Hoje'
                 background
                 backgroundPadding={6}

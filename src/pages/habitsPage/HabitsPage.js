@@ -27,9 +27,9 @@ export default function HabitsPage() {
                 }
             }
         )
-            .then((res) => {
-                setHabitos(res.data)
-            })
+        .then((res) => {
+            setHabitos(res.data)
+        })
     }, [enviou])
 
     function criaHabito() {

@@ -9,7 +9,6 @@ export default function Todo({ dias, nome, id, enviou, setEnviou, indiceDosDias 
 
     const { user } = useContext(UserContext);
     const indices = [1, 3, 5]
-    console.log(indiceDosDias)
     function deletar(e) {
         e.preventDefault()
         if (window.confirm('quer mesmo deletar?') === true) {

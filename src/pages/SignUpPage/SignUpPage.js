@@ -2,9 +2,9 @@ import styled from "styled-components"
 import imagem_principal from '/home/didibaiano/Desktop/Projetos Driven/projeto11-trackit/src/assets/images/Group_8.png'
 import { BASE_COLOR } from "../../constants/colors"
 import { Link, useNavigate } from "react-router-dom"
-import { useState, useContext } from "react"
+import { useState } from "react"
 import axios from "axios"
-import UserContext from "../../constants/Context"
+import { ThreeDots } from 'react-loader-spinner'
 
 
 export default function SignUpPage() {
@@ -12,8 +12,8 @@ export default function SignUpPage() {
     const [senha, setSenha] = useState('')
     const [nome, setNome] = useState('')
     const [foto, setFoto] = useState('')
+    const [carrega, setCarrega] = useState(false)
     const navigate = useNavigate()
-    const {user, setUser} = useContext(UserContext);
     const cadastro = {
         email: '',
         name: '',
@@ -23,6 +23,7 @@ export default function SignUpPage() {
     
     function enviar(e){
         e.preventDefault();
+        setCarrega(true)
         cadastro.email = email;
         cadastro.name = nome;
         cadastro.image = foto;
@@ -31,12 +32,16 @@ export default function SignUpPage() {
         .then((res) =>{
             console.log(cadastro)
             navigate('/')
-            
+            setCarrega(false)
         })
         .catch((err) =>{
+            setCarrega(false)
             console.log(err.response.status)
             if(err.response.status === 409){
                 alert('usuário já cadastrado')
+            }
+            if(err.response.status === 422){
+                alert('campos não podem ficar vazios')
             }
         })
     }
@@ -45,19 +50,30 @@ export default function SignUpPage() {
         <Tela>
             <Imagem src={imagem_principal}></Imagem>
             <form>
-                <input type="email" placeholder="email" onChange={(e) => {
+                <input type="email" placeholder="email" disabled={carrega} onChange={(e) => {
                     setEmail(e.target.value)
                     }}></input>
-                <input type="password" placeholder="senha" onChange={(e) => {
+                <input type="password" placeholder="senha" disabled={carrega} onChange={(e) => {
                     setSenha(e.target.value)
                     }}></input>
-                <input type='text' placeholder="nome" onChange={(e) => {
+                <input type='text' placeholder="nome" disabled={carrega} onChange={(e) => {
                     setNome(e.target.value)
                     }}></input>
-                <input type='url' placeholder="foto" onChange={(e) => {
+                <input type='url' placeholder="foto" disabled={carrega} onChange={(e) => {
                     setFoto(e.target.value)
                     }}></input>
-                <button onClick={(e) => enviar(e)}>Cadastrar</button>
+                <button onClick={(e) => enviar(e)}>{carrega === false ? 'Cadastrar' :
+                    <ThreeDots
+                        height="45"
+                        width="80"
+                        radius="9"
+                        color="#fff"
+                        ariaLabel="three-dots-loading"
+                        wrapperStyle={{}}
+                        wrapperClassName=""
+                        visible={true}
+                    />
+                }</button>
                 <Link to='/'>
                     <a>Já tem uma conta? Faça o login!</a>
                 </Link>
@@ -101,6 +117,9 @@ const Tela = styled.div`
         margin-bottom: 25px;
         font-size: 20px;
         color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
     >form >a{
         font-size: 14px;

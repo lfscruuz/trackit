@@ -2,10 +2,11 @@ import { useState } from "react"
 import styled from "styled-components"
 
 
-export default function Botao({d, i, dia, seleciona}){
+export default function Botao({d, i, dia, seleciona, carrega}){
     const [selecionarBotao, setSelecionarBotao] = useState(false)
 
-    function ativaDesativa(){
+    function ativaDesativa(e){
+        e.preventDefault()
         if (selecionarBotao){
             setSelecionarBotao(false)
             dia.pop(i)
@@ -15,11 +16,11 @@ export default function Botao({d, i, dia, seleciona}){
         }
     }
     return (
-        <Dia onClick={ativaDesativa} selecionarBotao={selecionarBotao}className="dia">{d}</Dia>
+        <Dia disabled={carrega} onClick={(e) => ativaDesativa(e)} selecionarBotao={selecionarBotao} className="dia">{d}</Dia>
     )
 }
 
-const Dia = styled.div`
+const Dia = styled.button`
     width: 30px;
     height: 30px;
     border: solid 1px #D4D4D4;
